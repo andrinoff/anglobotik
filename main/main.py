@@ -4,7 +4,7 @@ import logging
 
 import os
 from telegram.ext import ConversationHandler
-from src.msg_handlers import teacher, ai, START, TEACHER, AI, start, TeacherOrAi, TEACHER_OR_AI, TEACHER_TYPE, choose_teacher_type, AI_TYPE, choose_ai_type
+from src.msg_handlers import teacher, ai, START, TEACHER, AI, start, TeacherOrAi, TEACHER_OR_AI, TEACHER_TYPE, choose_teacher_type, AI_TYPE, choose_ai_type, EGE, OGE, EGE_OR_OGE, EgeOrOge
 
 
 
@@ -27,6 +27,12 @@ if __name__ == '__main__':
                     CallbackQueryHandler(TeacherOrAi, pattern="^TEACHER$"),
                     CallbackQueryHandler(TeacherOrAi, pattern="^AI$")
             ],
+            EGE_OR_OGE: [
+                CallbackQueryHandler(EgeOrOge, pattern="^EGE$"),
+                CallbackQueryHandler(EgeOrOge, pattern="^OGE$")
+
+            ],
+            
             TEACHER_TYPE: [
                     
                     CallbackQueryHandler(choose_teacher_type, pattern="^ESSAY$"),

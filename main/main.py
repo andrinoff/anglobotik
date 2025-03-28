@@ -4,7 +4,11 @@ import logging
 
 import os
 from telegram.ext import ConversationHandler
-from src.msg_handlers import teacher, ai, START, TEACHER, AI, start, TeacherOrAi, TEACHER_OR_AI, TEACHER_TYPE, choose_teacher_type, AI_TYPE, choose_ai_type, EGE, OGE, EGE_OR_OGE, EgeOrOge
+from src.msg_handlers import (
+    teacher, ai, START, TEACHER, AI, start, TeacherOrAi, 
+    TEACHER_OR_AI, 
+    EGE_OR_OGE, EgeOrOge, LETTER_OR_ESSAY, letterOrEssay
+)
 
 
 
@@ -21,26 +25,23 @@ if __name__ == '__main__':
         entry_points=[CommandHandler('start', start)],
         states={
             START: [
-                CallbackQueryHandler(TeacherOrAi)
+                CallbackQueryHandler(start, pattern="^START$"),
+                CallbackQueryHandler(EgeOrOge, pattern="^BACK$")
             ],
             TEACHER_OR_AI: [
                     CallbackQueryHandler(TeacherOrAi, pattern="^TEACHER$"),
                     CallbackQueryHandler(TeacherOrAi, pattern="^AI$")
             ],
+            LETTER_OR_ESSAY: [
+                CallbackQueryHandler(letterOrEssay, pattern="^LETTER$"),
+                CallbackQueryHandler(letterOrEssay, pattern="^ESSAY$"),
+                CallbackQueryHandler(TeacherOrAi, pattern="^BACK$")
+            ],
             EGE_OR_OGE: [
                 CallbackQueryHandler(EgeOrOge, pattern="^EGE$"),
-                CallbackQueryHandler(EgeOrOge, pattern="^OGE$")
+                CallbackQueryHandler(EgeOrOge, pattern="^OGE$"),
+                CallbackQueryHandler(TeacherOrAi, pattern="^BACK$")
 
-            ],
-            
-            TEACHER_TYPE: [
-                    
-                    CallbackQueryHandler(choose_teacher_type, pattern="^ESSAY$"),
-                    CallbackQueryHandler(choose_teacher_type, pattern="^LETTER$")
-            ],
-            AI_TYPE: [
-                CallbackQueryHandler(choose_ai_type, pattern="^ESSAY$"),
-                CallbackQueryHandler(choose_ai_type, pattern="^LETTER$")
             ],
             TEACHER: [
                     MessageHandler(filters.TEXT & ~filters.COMMAND, teacher)

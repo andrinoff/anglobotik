@@ -6,17 +6,15 @@ from telegram.ext._handlers.conversationhandler import ConversationHandler
 from src.ai.ai import check_essay, check_letter
 from telegram import constants
 
+from dotenv import load_dotenv
+load_dotenv()
 # Stages
 START, TEACHER_OR_AI, TEACHER, AI, EGE_OR_OGE, LETTER_OR_ESSAY = range(6)
 
-# Stages = range(9)
 
 
+# the start command that starts the conv handler + asks the first question
 async def start(update: Update, context: CallbackContext):
-    # keyboard = [
-    #     [telegram.InlineKeyboardButton(f'Teacher [{os.getenv("PRICE")}]', callback_data='TEACHER')],
-    #     [telegram.InlineKeyboardButton('AI', callback_data='AI')]
-    # ]
     keyboard = [
         [telegram.InlineKeyboardButton('ЕГЭ', callback_data='EGE')],
         [telegram.InlineKeyboardButton('ОГЭ', callback_data='OGE')],
@@ -25,13 +23,14 @@ async def start(update: Update, context: CallbackContext):
     await update.message.reply_text("Привет! Я Англоботик, который поможет проверить твою письменную работу для экзаменов. Выбери, какой экзамен ты сдаёшь: ОГЭ или ЕГЭ....:", reply_markup=reply_markup)
     return EGE_OR_OGE
 
-
+# Second stage, gets the query from function ^
 async def EgeOrOge (update: Update, context: CallbackContext): 
     query = update.callback_query
     await query.answer()
     if query.data == "EGE":
-        print("chose ege")
+        # Adds the EGE to the python-telegram-bot memory about users
         context.user_data["type_exam"] = "EGE"
+        # and asks for possible exams 
         keyboard = [
         [telegram.InlineKeyboardButton(f'Эссе', callback_data='ESSAY')],
         [telegram.InlineKeyboardButton('Личное письмо', callback_data='LETTER')],

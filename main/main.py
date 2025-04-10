@@ -10,6 +10,8 @@ from src.msg_handlers import (
     EGE_OR_OGE, EgeOrOge, LETTER_OR_ESSAY, letterOrEssay
 )
 
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # logging 
@@ -24,6 +26,7 @@ if __name__ == '__main__':
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
+            # Add states for the functions have an opportunity to send forward and get query
             START: [
                 CallbackQueryHandler(start, pattern="^START$"),
                 CallbackQueryHandler(EgeOrOge, pattern="^BACK$")
@@ -55,6 +58,7 @@ if __name__ == '__main__':
         ]
 
     )
+    # add handler and start
     application.add_handler(conv_handler)
 
     application.run_polling()

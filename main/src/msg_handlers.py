@@ -57,11 +57,11 @@ async def letterOrEssay(update: Update, context: CallbackContext):
     await query.answer()
     if query.data == 'LETTER':
         print("Letter button pressed")
-        context.user_data["type"] = "letter"
+        context.user_data["type"] = "LETTER"
     elif query.data == 'ESSAY':
         print("Essay button pressed")
-        context.user_data["type"] = "essay"
-    elif query.dates == "BACK": 
+        context.user_data["type"] = "ESSAY"
+    elif query.data == "BACK": 
         print("Back button pressed")
         await query.edit_message_text(text="Have a good dat, to start over type /start ")
         return ConversationHandler.END
@@ -116,6 +116,6 @@ async def ai(update: Update, context: CallbackContext):
 async def teacher(update: Update, context: CallbackContext):
     work = update.message.text
     print(work)
-    await context.bot.send_message(chat_id=os.getenv('TEACHER_CHAT_ID'), text=f"@{update.effective_chat.username} sent you a {context.user_data["type"].lower()} to check {context.user_data["type_exam"]}: \n {work}")
+    await context.bot.send_message(chat_id=os.getenv('TEACHER_CHAT_ID'), text=f"@{update.effective_chat.username} sent you a {context.user_data['type'].lower()} to check {context.user_data['type_exam']}: \n {work}")
     await update.message.reply_text(f'Отлично. Твой текст был отправлен учителю. Оплати по {os.getenv("PHONE_NUMBER")} и отправь чек в личку! \n Их контакты: {os.getenv("NAME")}, @{os.getenv("USERNAME")}')
     return ConversationHandler.END

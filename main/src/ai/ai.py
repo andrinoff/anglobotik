@@ -9,7 +9,7 @@ def check_essay(essay:str, exam:str):
     client = OpenAI()
     openai.api_key = os.getenv('OPENAI_API_KEY')
     response = client.responses.create(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     instructions="system, write with no markdown",
     input=f'оцени мне это эссе: "{essay}" по официальным критериям по эссе {exam}, давая оценку на каждый отдельный критерий и исправляя ошибки в эссе, связанные с критериями. ',
 )
@@ -20,7 +20,7 @@ def check_letter(letter:str, exam:str):
     client = OpenAI()
     openai.api_key = os.getenv('OPENAI_API_KEY')
     response = client.responses.create(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     instructions="system, write with no markdown",
     input=f'оцени мне это письмо: "{letter}" по официальным критериям письма {exam}, давая оценку на каждый отдельный критерий и исправляя ошибки в письме, связанные с критериями.',
 )

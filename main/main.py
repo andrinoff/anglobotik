@@ -5,14 +5,14 @@ import logging
 import os
 from telegram.ext import ConversationHandler
 from src.msg_handlers import (
-    teacher, ai, START, TEACHER, AI, start, TeacherOrAi, 
-    TEACHER_OR_AI, 
+    teacher, ai, START, TEACHER, AI, start, TeacherOrAi,
+    TEACHER_OR_AI,
     EGE_OR_OGE, EgeOrOge, LETTER_OR_ESSAY, letterOrEssay
 )
 
+# Loads the .env file in here
 from dotenv import load_dotenv
 load_dotenv()
-
 
 # logging 
 logging.basicConfig(

@@ -4,7 +4,6 @@ from telegram.ext import CallbackContext
 import os
 from telegram.ext._handlers.conversationhandler import ConversationHandler
 from src.ai.ai import check_essay, check_letter
-from telegram import constants
 
 # Loads the .env file in here
 from dotenv import load_dotenv

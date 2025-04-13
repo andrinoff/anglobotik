@@ -15,10 +15,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # logging 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+# logging.basicConfig(
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#     level=logging.INFO
+# )
 
 # start the bot and add handlers
 if __name__ == '__main__':
@@ -29,21 +29,22 @@ if __name__ == '__main__':
             # Add states for the functions have an opportunity to send forward and get query
             START: [
                 CallbackQueryHandler(start, pattern="^START$"),
-                CallbackQueryHandler(EgeOrOge, pattern="^BACK$")
+                CallbackQueryHandler(start, pattern="^BACK$")
             ],
             TEACHER_OR_AI: [
                     CallbackQueryHandler(TeacherOrAi, pattern="^TEACHER$"),
-                    CallbackQueryHandler(TeacherOrAi, pattern="^AI$")
+                    CallbackQueryHandler(TeacherOrAi, pattern="^AI$"),
+                    CallbackQueryHandler(TeacherOrAi, pattern='^BACK$')
             ],
             LETTER_OR_ESSAY: [
                 CallbackQueryHandler(letterOrEssay, pattern="^LETTER$"),
                 CallbackQueryHandler(letterOrEssay, pattern="^ESSAY$"),
-                CallbackQueryHandler(TeacherOrAi, pattern="^BACK$")
+                CallbackQueryHandler(letterOrEssay, pattern="^BACK$")
             ],
             EGE_OR_OGE: [
                 CallbackQueryHandler(EgeOrOge, pattern="^EGE$"),
                 CallbackQueryHandler(EgeOrOge, pattern="^OGE$"),
-                CallbackQueryHandler(TeacherOrAi, pattern="^BACK$")
+                CallbackQueryHandler(EgeOrOge, pattern="^BACK$")
 
             ],
             TEACHER: [

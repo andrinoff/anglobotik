@@ -15,10 +15,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # logging 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+# logging.basicConfig(
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#     level=logging.INFO
+# )
 
 # start the bot and add handlers
 if __name__ == '__main__':
@@ -33,7 +33,8 @@ if __name__ == '__main__':
             ],
             TEACHER_OR_AI: [
                     CallbackQueryHandler(TeacherOrAi, pattern="^TEACHER$"),
-                    CallbackQueryHandler(TeacherOrAi, pattern="^AI$")
+                    CallbackQueryHandler(TeacherOrAi, pattern="^AI$"),
+                    CallbackQueryHandler(TeacherOrAi, pattern='^BACK$')
             ],
             LETTER_OR_ESSAY: [
                 CallbackQueryHandler(letterOrEssay, pattern="^LETTER$"),

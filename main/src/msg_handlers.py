@@ -20,7 +20,7 @@ async def start(update: Update, context: CallbackContext):
         [telegram.InlineKeyboardButton('ОГЭ', callback_data='OGE')],
         ]
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Привет! Я Англоботик, который поможет проверить твою письменную работу для экзаменов. Выбери, какой экзамен ты сдаёшь: ОГЭ или ЕГЭ....:", reply_markup=reply_markup)
+    await update.message.reply_text("Привет! Я Англоботик, который поможет проверить твою письменную работу для экзаменов. Выбери, какой экзамен ты сдаёшь: ОГЭ или ЕГЭ:", reply_markup=reply_markup)
     return EGE_OR_OGE
 
 
@@ -35,7 +35,7 @@ async def EgeOrOge (update: Update, context: CallbackContext):
         keyboard = [
         [telegram.InlineKeyboardButton(f'Эссе', callback_data='ESSAY')],
         [telegram.InlineKeyboardButton('Личное письмо', callback_data='LETTER')],
-        # [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
+        [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
         ]
         reply_markup = telegram.InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(text="Отлично! Теперь выбери, что будем проверять: эссе или личное письмо.", reply_markup=reply_markup)
@@ -44,7 +44,7 @@ async def EgeOrOge (update: Update, context: CallbackContext):
         context.user_data["type_exam"] = "OGE"
         keyboard = [
         [telegram.InlineKeyboardButton('Личное письмо', callback_data='LETTER')],
-        # [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
+        [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
         ]
         reply_markup = telegram.InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(text="Отлично! Теперь выбери, что будем проверять", reply_markup=reply_markup)
@@ -60,16 +60,21 @@ async def letterOrEssay(update: Update, context: CallbackContext):
         context.user_data["type"] = "LETTER"
     elif query.data == 'ESSAY':
         context.user_data["type"] = "ESSAY"
-    # elif query.data == "BACK": 
-    #     await query.edit_message_text(text="Have a good dat, to start over type /start ")
-    #     return ConversationHandler.END
+    elif query.data == "BACK": 
+        keyboard = [
+            [telegram.InlineKeyboardButton('ЕГЭ', callback_data='EGE')],
+            [telegram.InlineKeyboardButton('ОГЭ', callback_data='OGE')],
+            ]
+        reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+        await query.edit_message_text(text ="Привет! Я Англоботик, который поможет проверить твою письменную работу для экзаменов. Выбери, какой экзамен ты сдаёшь: ОГЭ или ЕГЭ:", reply_markup=reply_markup)
+        return EGE_OR_OGE
     else:
         await query.edit_message_text(text="Error: Unexpected button pressed. Please try again.")
         return ConversationHandler.END
     keyboard = [
         [telegram.InlineKeyboardButton(f'🔹 Учитель ({os.getenv("PRICE")}, детальный разбор)', callback_data='TEACHER')],
         [telegram.InlineKeyboardButton('🔹 Искусственный интеллект (бесплатно, быстрая проверка)', callback_data='AI')],
-        # [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
+        [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
         ]
     reply_markup = telegram.InlineKeyboardMarkup(keyboard)
     await query.edit_message_text(text="Последний шаг! Кто будет проверять твою работу? \nВыбери вариант:", reply_markup=reply_markup)
@@ -87,9 +92,31 @@ async def TeacherOrAi(update: Update, context: CallbackContext):
     elif query.data == 'AI':
         await query.edit_message_text(text="Отлично! Пришли мне текст для проверки:")
         return AI
-    # elif query.data == 'BACK':
-    #     await query.edit_message_text(text="Чтобы начать с начала напиши /start ")
-    #     return ConversationHandler.END
+    elif query.data == 'BACK':
+        if context.user_data["type_exam"] == "EGE":
+            # Adds the EGE to the python-telegram-bot memory about users
+            
+            # and asks for possible exams 
+            keyboard = [
+            [telegram.InlineKeyboardButton(f'Эссе', callback_data='ESSAY')],
+            [telegram.InlineKeyboardButton('Личное письмо', callback_data='LETTER')],
+            [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
+            ]
+            reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+            await query.edit_message_text(text="Отлично! Теперь выбери, что будем проверять: эссе или личное письмо.", reply_markup=reply_markup)
+            return LETTER_OR_ESSAY
+        if context.user_data["type_exam"] == "OGE":
+            # and asks for possible exams 
+            keyboard = [
+            [telegram.InlineKeyboardButton(f'Эссе', callback_data='ESSAY')],
+            [telegram.InlineKeyboardButton('Личное письмо', callback_data='LETTER')],
+            [telegram.InlineKeyboardButton('Назад', callback_data='BACK')]
+            ]
+            reply_markup = telegram.InlineKeyboardMarkup(keyboard)
+            await query.edit_message_text(text="Отлично! Теперь выбери, что будем проверять: эссе или личное письмо.", reply_markup=reply_markup)
+            return LETTER_OR_ESSAY
+        else: 
+            query.edit_message_text(text="Error")
     else: 
         await query.edit_message_text(text="Что-то пошло не так. Попробуйте еще раз.")
         return ConversationHandler.END
